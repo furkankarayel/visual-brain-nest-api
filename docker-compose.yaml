@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:10.0-alpine
+    restart: always
+    environment:
+      - POSTGRES_DB=visual-brain
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=docker
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+  nest-js:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    command: npm run start:dev 
