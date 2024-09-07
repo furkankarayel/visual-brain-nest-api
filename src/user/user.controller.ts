@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -10,16 +11,13 @@ export class UserController {
        return this.userService.handleRegister(email, name, password);
     }
 
-    @Post('login')
-    async login(@Body() body: { email: string;password: string }) {
-        const { email, password } = body;
-        return this.userService.handleLogin(email, password);
-    }
+    @UseGuards(AuthGuard)
     @Get('profile/:id')
     async getProfile(@Param('id') id: string) {
         return this.userService.handleProfileGet(parseInt(id, 10));
     }
 
+    @UseGuards(AuthGuard)
     @Put('image-usage')
     async incrementImageUsage(@Body('id') id: number) {
         return this.userService.handleImage(id);

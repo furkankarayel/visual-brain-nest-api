@@ -52,7 +52,7 @@ export class UserService {
         }
       }
 
-      async handleLogin(email: string, password: string): Promise<User | string> {
+      async handleLogin(email: string, password: string): Promise<User> {
         if (!email || !password) {
           throw new Error('Incorrect form submission. All fields are required.');
         }
